@@ -1,27 +1,21 @@
 import { Module } from '@nestjs/common'
-import { ConfigModule, ConfigService } from '@nestjs/config'
-import { TypeOrmModule } from '@nestjs/typeorm'
-import { validate } from 'src/configs/env.validation'
+import { APP_GUARD } from '@nestjs/core'
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
-import { typeOrmConfig } from './configs/typeorm.config'
-
-const nodeEnv = process.env.NODE_ENV || 'development'
-console.log('=============  LOAD ENV : ' + nodeEnv + '  =============')
+import { AuthModule } from './auth/auth.module'
+import { JwtAccessGuard } from './common/guards/jwt-access.guard'
+import { ConfigsModule } from './configs/configs.module'
+import { UsersModule } from './users/users.module'
 
 @Module({
-  imports: [
-    ConfigModule.forRoot({
-      isGlobal: true,
-      validate: validate,
-      envFilePath: [`.env.${nodeEnv}`],
-    }),
-    TypeOrmModule.forRootAsync({
-      useFactory: (configService: ConfigService) => typeOrmConfig(configService),
-      inject: [ConfigService],
-    }),
-  ],
+  imports: [ConfigsModule, AuthModule, UsersModule],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_GUARD,
+      useClass: JwtAccessGuard,
+    },
+  ],
 })
 export class AppModule {}

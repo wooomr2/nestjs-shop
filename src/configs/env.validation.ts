@@ -16,6 +16,7 @@ export class EnvVariables {
   @Max(65535)
   PORT: number = 3000
 
+  // Database
   @IsString()
   DB_HOST: string
 
@@ -32,6 +33,19 @@ export class EnvVariables {
 
   @IsString()
   DB_DATABASE: string
+
+  // JWT
+  @IsString()
+  ACCESS_TOKEN_SECRET: string
+
+  @IsString()
+  ACCESS_TOKEN_EXPIRE: string
+
+  @IsString()
+  REFRESH_TOKEN_SECRET: string
+
+  @IsString()
+  REFRESH_TOKEN_EXPIRE: string
 }
 
 export function validate(config: Record<string, unknown>) {
