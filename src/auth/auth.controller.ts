@@ -3,10 +3,10 @@ import { CurrentPaylaod } from 'src/common/decorators/current-payload.decorator'
 import { CurrentUser } from 'src/common/decorators/current-user.decorator'
 import { Public } from 'src/common/decorators/public.decorator'
 import { RefreshGuard } from 'src/common/guards/jwt-refresh.guard'
-import { ICurrentUser, ITokens } from 'src/common/types/auth.types'
 import { AuthService } from './auth.service'
 import { SigninDto } from './dto/signin.dto'
 import { SignupDto } from './dto/signup.dto'
+import { ICurrentUser, ITokens } from './types'
 
 @Controller('auth')
 export class AuthController {

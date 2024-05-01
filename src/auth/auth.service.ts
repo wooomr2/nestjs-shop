@@ -3,11 +3,11 @@ import { ConfigService } from '@nestjs/config'
 import { JwtService } from '@nestjs/jwt'
 import { InjectRepository } from '@nestjs/typeorm'
 import { compare, genSalt, hash } from 'bcrypt'
-import { ICurrentUser, ITokens, JwtPayload } from 'src/common/types/auth.types'
 import { UserEntity } from 'src/entities/user.entity'
 import { DataSource, Repository } from 'typeorm'
 import { SigninDto } from './dto/signin.dto'
 import { SignupDto } from './dto/signup.dto'
+import { ICurrentUser, ITokens, JwtPayload } from './types'
 
 @Injectable()
 export class AuthService {
@@ -20,7 +20,6 @@ export class AuthService {
   ) {}
 
   async signup(dto: SignupDto) {
-    console.log(dto)
     const emailExists = await this.userRepository.existsBy({ email: dto.email })
     if (emailExists) throw new BadRequestException('Email already exists')
 
@@ -33,7 +32,7 @@ export class AuthService {
   }
 
   async signin(dto: SigninDto): Promise<ITokens> {
-    const user = await this.userRepository.findOne({ where: { email: dto.email } })
+    const user = await this.userRepository.findOneBy({ email: dto.email })
     if (!user) throw new BadRequestException('invalid user')
 
     const matchPassword = await compare(dto.password, user.password)
