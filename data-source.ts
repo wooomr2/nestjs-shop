@@ -1,9 +1,9 @@
-import { DataSource, DataSourceOptions } from 'typeorm'
 import { config } from 'dotenv'
 import { join } from 'path'
+import { DataSource, DataSourceOptions } from 'typeorm'
 
 const nodeEnv = process.env.NODE_ENV || 'development'
-config({ path: join(__dirname, '../../', `.env.${nodeEnv}`) })
+config({ path: join(__dirname, './', `.env.${nodeEnv}`) })
 console.log('============= MIGRATION ENV : ' + nodeEnv + '  =============')
 
 export const dataSourceOptions: DataSourceOptions = {
@@ -13,8 +13,8 @@ export const dataSourceOptions: DataSourceOptions = {
   username: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_DATABASE,
-  entities: ['dist/**/!(base).entity.{js,ts}'],
-  migrations: ['dist/migrations/*{.ts,.js}'],
+  entities: ['**/!(base).entity.{js,ts}'],
+  migrations: ['migrations/*{.ts,.js}'],
   logging: ['query', 'error'],
   synchronize: false,
 }

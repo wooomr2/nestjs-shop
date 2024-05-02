@@ -8,7 +8,7 @@ export const typeOrmConfig = (configService: ConfigService): TypeOrmModuleOption
   username: configService.get('DB_USERNAME'),
   password: configService.get('DB_PASSWORD'),
   database: configService.get('DB_DATABASE'),
-  synchronize: true,
+  synchronize: false,
   entities: ['dist/**/!(base).entity.{js,ts}'],
   logging: ['query', 'error'],
 })
