@@ -1,5 +1,5 @@
 import { IsEmail, IsNotEmpty, IsStrongPassword } from 'class-validator'
-import { passwordOption } from '../constants'
+import { passwordOption } from 'src/common/constants'
 
 export class SignupDto {
   @IsNotEmpty()

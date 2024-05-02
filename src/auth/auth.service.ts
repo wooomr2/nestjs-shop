@@ -1,4 +1,4 @@
-import { BadRequestException, ForbiddenException, Injectable } from '@nestjs/common'
+import { BadRequestException, ForbiddenException, Injectable, InternalServerErrorException } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { JwtService } from '@nestjs/jwt'
 import { InjectRepository } from '@nestjs/typeorm'
@@ -32,7 +32,10 @@ export class AuthService {
   }
 
   async signin(dto: SigninDto): Promise<ITokens> {
-    const user = await this.userRepository.findOneBy({ email: dto.email })
+    const user = await this.userRepository.findOne({
+      select: { id: true, email: true, password: true, roles: true },
+      where: { email: dto.email },
+    })
     if (!user) throw new BadRequestException('invalid user')
 
     const matchPassword = await compare(dto.password, user.password)
@@ -63,8 +66,12 @@ export class AuthService {
     return tokens
   }
 
-  #generateTokens(user: UserEntity): ITokens {
-    const jwtPayload: JwtPayload = { sub: user.id, email: user.email }
+  #generateTokens({ id, email, roles }: UserEntity): ITokens {
+    if (!id || !email || !roles || roles.length < 1) {
+      throw new InternalServerErrorException('Token generation failed')
+    }
+
+    const jwtPayload: JwtPayload = { sub: id, email: email, roles: roles }
 
     const accessToken = this.jwtService.sign(jwtPayload, {
       secret: this.configService.getOrThrow('ACCESS_TOKEN_SECRET'),

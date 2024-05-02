@@ -1,4 +1,4 @@
-import { IsEmail } from 'class-validator'
+import { ROLE } from 'src/common/enums/roles.enum'
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
 import { BaseEntity } from './base.entity'
 
@@ -7,19 +7,20 @@ export class UserEntity extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string
 
-  @Column()
-  @IsEmail()
+  @Column({ unique: true })
   email: string
 
-  @Column()
+  @Column({ select: false })
   password: string
 
   @Column()
   name: string
 
-  // @Column({ type: 'enum', enum: ROLES, default: ROLES.USER })
-  // Roles: ROLES[]
+  @Column({ type: 'enum', enum: ROLE, array: true, default: [ROLE.USER] })
+  roles: ROLE[]
 
   @Column({ nullable: true })
   refreshToken?: string | null
+
+  // Associtaions
 }
