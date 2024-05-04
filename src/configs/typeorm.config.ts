@@ -1,5 +1,6 @@
 import { ConfigService } from '@nestjs/config'
 import { TypeOrmModuleOptions } from '@nestjs/typeorm'
+import { SnakeNamingStrategy } from 'typeorm-naming-strategies'
 
 export const typeOrmConfig = (configService: ConfigService): TypeOrmModuleOptions => ({
   type: 'postgres',
@@ -8,7 +9,8 @@ export const typeOrmConfig = (configService: ConfigService): TypeOrmModuleOption
   username: configService.get('DB_USERNAME'),
   password: configService.get('DB_PASSWORD'),
   database: configService.get('DB_DATABASE'),
-  synchronize: false,
+  synchronize: true,
   entities: ['dist/**/!(base).entity.{js,ts}'],
   logging: ['query', 'error'],
+  namingStrategy: new SnakeNamingStrategy(),
 })
