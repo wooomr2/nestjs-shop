@@ -5,7 +5,7 @@ export const CurrentUser = createParamDecorator(
   (data: keyof JwtPayloadWithRt, context: ExecutionContext): ICurrentUser => {
     const request = context.switchToHttp().getRequest()
 
-    const currentUser = {
+    const currentUser: ICurrentUser = {
       id: request.user.sub,
       email: request.user.email,
       roles: request.user.roles,

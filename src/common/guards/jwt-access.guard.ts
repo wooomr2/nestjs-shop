@@ -10,7 +10,6 @@ export class JwtAccessGuard extends AuthGuard('jwt') {
 
   canActivate(context: ExecutionContext) {
     const isPublic = this.reflector.getAllAndOverride<boolean>('isPublic', [context.getHandler(), context.getClass()])
-
     if (isPublic) return true
 
     return super.canActivate(context)
