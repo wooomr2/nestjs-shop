@@ -1,8 +1,9 @@
-import { BadRequestException, ForbiddenException, Injectable, InternalServerErrorException } from '@nestjs/common'
+import { Injectable, InternalServerErrorException } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { JwtService } from '@nestjs/jwt'
 import { InjectRepository } from '@nestjs/typeorm'
 import { compare, genSalt, hash } from 'bcrypt'
+import { ResponseDto } from 'src/common/dto/response.dto'
 import { UserEntity } from 'src/entities/user.entity'
 import { DataSource, Repository } from 'typeorm'
 import { SigninDto } from './dto/signin.dto'
@@ -21,49 +22,50 @@ export class AuthService {
 
   async signup(dto: SignupDto) {
     const emailExists = await this.userRepository.existsBy({ email: dto.email })
-    if (emailExists) throw new BadRequestException('Email already exists')
+    if (emailExists) throw ResponseDto.emailExists()
 
     dto.password = await hash(dto.password, await genSalt(10))
     const userEntity = this.userRepository.create(dto)
 
-    const user = await this.userRepository.save(userEntity)
+    await this.userRepository.save(userEntity)
 
-    return user
+    return ResponseDto.OK()
   }
 
-  async signin(dto: SigninDto): Promise<ITokens> {
+  async signin(dto: SigninDto) {
     const user = await this.userRepository.findOne({
       select: { id: true, email: true, password: true, roles: true },
       where: { email: dto.email },
     })
-    if (!user) throw new BadRequestException('invalid user')
+    if (!user) throw ResponseDto.invalidUser()
 
     const matchPassword = await compare(dto.password, user.password)
-    if (!matchPassword) throw new ForbiddenException('Invalid credentials')
+    if (!matchPassword) throw ResponseDto.invalidPassword()
 
     delete user.password
 
     const tokens = this.#generateTokens(user)
     await this.userRepository.update({ id: user.id }, { refreshToken: tokens.refreshToken })
 
-    return tokens
+    return ResponseDto.OKWith({ user, tokens })
   }
 
   async logout(currentUser: ICurrentUser) {
     await this.userRepository.update({ id: currentUser.id }, { refreshToken: null })
+    return ResponseDto.OK()
   }
 
   async tokenRefresh(currentUser: ICurrentUser, refreshToken: string) {
     const user = await this.userRepository.findOneBy({ id: currentUser.id })
 
     if (!user || !user.refreshToken || user.refreshToken !== refreshToken) {
-      throw new ForbiddenException('Access Denied')
+      throw ResponseDto.accessDenied()
     }
 
     const tokens = this.#generateTokens(user)
     await this.userRepository.update({ id: user.id }, { refreshToken: tokens.refreshToken })
 
-    return tokens
+    return ResponseDto.OKWith({ tokens })
   }
 
   #generateTokens({ id, email, roles }: UserEntity): ITokens {

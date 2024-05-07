@@ -1,7 +1,6 @@
-import { Body, Controller, Get, Param, ParseIntPipe, Patch, Post, UseGuards } from '@nestjs/common'
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, UseGuards } from '@nestjs/common'
 import { ROLE } from 'src/common/enums/roles.enum'
 import { RolesGuard } from 'src/common/guards/roles.guard'
-import { CategoryEntity } from 'src/entities/category.entity'
 import { CategoriesService } from './categories.service'
 import { CreateCategoryDto } from './dto/create-category.dto'
 import { UpdateCategoryDto } from './dto/update-category.dto'
@@ -12,23 +11,29 @@ export class CategoriesController {
 
   @UseGuards(RolesGuard([ROLE.ADMIN]))
   @Post()
-  create(@Body() createCategoryDto: CreateCategoryDto): Promise<CategoryEntity> {
-    return this.categoriesService.create(createCategoryDto)
-  }
-
-  @Get()
-  findAll(): Promise<CategoryEntity[]> {
-    return this.categoriesService.findAll()
-  }
-
-  @Get('/:id')
-  findOne(@Param('id', ParseIntPipe) id: number): Promise<CategoryEntity> {
-    return this.categoriesService.findOne(id)
+  create(@Body() dto: CreateCategoryDto) {
+    return this.categoriesService.create(dto)
   }
 
   @UseGuards(RolesGuard([ROLE.ADMIN]))
   @Patch('/:id')
-  update(@Param('id', ParseIntPipe) id: number, @Body() UpdateCategoryDto: UpdateCategoryDto): Promise<CategoryEntity> {
-    return this.categoriesService.update(id, UpdateCategoryDto)
+  update(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateCategoryDto) {
+    return this.categoriesService.update(id, dto)
+  }
+
+  @UseGuards(RolesGuard([ROLE.ADMIN]))
+  @Delete('/:id')
+  delete(@Param('id', ParseIntPipe) id: number) {
+    return this.categoriesService.delete(id)
+  }
+
+  @Get()
+  findAll() {
+    return this.categoriesService.findAll()
+  }
+
+  @Get('/:id')
+  findOne(@Param('id', ParseIntPipe) id: number) {
+    return this.categoriesService.findOne(id)
   }
 }

@@ -1,4 +1,4 @@
-import { Column, CreateDateColumn, Entity, UpdateDateColumn } from 'typeorm'
+import { CreateDateColumn, DeleteDateColumn, Entity, UpdateDateColumn } from 'typeorm'
 
 @Entity()
 export class BaseEntity {
@@ -8,6 +8,6 @@ export class BaseEntity {
   @UpdateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP', select: true })
   updatedAt: Date
 
-  @Column({ type: 'timestamptz', nullable: true })
+  @DeleteDateColumn({ type: 'timestamptz', nullable: true })
   deletedAt?: Date | null
 }

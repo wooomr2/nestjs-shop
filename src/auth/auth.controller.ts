@@ -6,7 +6,7 @@ import { RefreshGuard } from 'src/common/guards/jwt-refresh.guard'
 import { AuthService } from './auth.service'
 import { SigninDto } from './dto/signin.dto'
 import { SignupDto } from './dto/signup.dto'
-import { ICurrentUser, ITokens } from './types'
+import { ICurrentUser } from './types'
 
 @Controller('auth')
 export class AuthController {
@@ -36,10 +36,7 @@ export class AuthController {
   @UseGuards(RefreshGuard)
   @Post('refresh')
   @HttpCode(HttpStatus.OK)
-  tokenRefresh(
-    @CurrentUser() user: ICurrentUser,
-    @CurrentPaylaod('refreshToken') refreshToken: string,
-  ): Promise<ITokens> {
+  tokenRefresh(@CurrentUser() user: ICurrentUser, @CurrentPaylaod('refreshToken') refreshToken: string) {
     return this.authService.tokenRefresh(user, refreshToken)
   }
 }
