@@ -10,12 +10,12 @@ export class UsersController {
 
   @Get()
   @UseGuards(RolesGuard([ROLE.USER]))
-  findAll(): Promise<UserEntity[]> {
-    return this.usersService.findAll()
+  async findAll(): Promise<UserEntity[]> {
+    return await this.usersService.findAll()
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string): Promise<UserEntity> {
-    return this.usersService.findOne(id)
+  async findOne(@Param('id') id: string): Promise<UserEntity> {
+    return await this.usersService.findOne(id)
   }
 }

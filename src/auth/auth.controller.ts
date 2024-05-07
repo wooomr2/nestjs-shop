@@ -12,31 +12,33 @@ import { ICurrentUser } from './types'
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+  // HttpCode:: Default 200, POST 201 // 나머지 Module에서는 생략하고 필요할때만 쓰자
+
   @Public()
-  @Post('sign-up')
+  @Post('/sign-up')
   @HttpCode(HttpStatus.CREATED)
-  signup(@Body() dto: SignupDto) {
-    return this.authService.signup(dto)
+  async signup(@Body() dto: SignupDto) {
+    return await this.authService.signup(dto)
   }
 
   @Public()
-  @Post('sign-in')
+  @Post('/sign-in')
   @HttpCode(HttpStatus.OK)
-  signin(@Body() dto: SigninDto) {
-    return this.authService.signin(dto)
+  async signin(@Body() dto: SigninDto) {
+    return await this.authService.signin(dto)
   }
 
-  @Post('logout')
+  @Post('/logout')
   @HttpCode(HttpStatus.OK)
-  logout(@CurrentUser() user: ICurrentUser) {
-    return this.authService.logout(user)
+  async logout(@CurrentUser() user: ICurrentUser) {
+    return await this.authService.logout(user)
   }
 
   @Public()
   @UseGuards(RefreshGuard)
-  @Post('refresh')
+  @Post('/refresh')
   @HttpCode(HttpStatus.OK)
-  tokenRefresh(@CurrentUser() user: ICurrentUser, @CurrentPaylaod('refreshToken') refreshToken: string) {
-    return this.authService.tokenRefresh(user, refreshToken)
+  async tokenRefresh(@CurrentUser() user: ICurrentUser, @CurrentPaylaod('refreshToken') refreshToken: string) {
+    return await this.authService.tokenRefresh(user, refreshToken)
   }
 }

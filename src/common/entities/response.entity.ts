@@ -1,13 +1,14 @@
 import { BadRequestException, ForbiddenException, NotFoundException } from '@nestjs/common'
-import { ResCode, ResMessage } from '../enums/response.enum'
+import { ResCode, ResMessage } from '../enums/res-message.enum'
 
-export class ResponseDto {
-  static OK(resCode = ResCode.OK, message = ResMessage.OK) {
-    return { resCode, message }
+export class ResponseEntity {
+  static OK<T>(data?: T, resCode = ResCode.OK, message = ResMessage.OK) {
+    return { resCode, message, data }
   }
 
-  static OKWith<T>(data: T, resCode = ResCode.OK, message = ResMessage.OK) {
-    return { resCode, message, data }
+  // Common
+  static notFound(item: string) {
+    return new NotFoundException({ resCode: ResCode.NOT_FOUND, message: `${item} ${ResMessage.NOT_FOUND}` })
   }
 
   // Auth
@@ -25,10 +26,5 @@ export class ResponseDto {
 
   static invalidPassword() {
     return new ForbiddenException({ resCode: ResCode.INVALID_PASSWORD, message: ResMessage.INVALID_PASSWORD })
-  }
-
-  // Category
-  static categoryNotFound() {
-    return new NotFoundException({ resCode: ResCode.CATEGORY_NOT_FOUND, message: ResMessage.CATEGORY_NOT_FOUND })
   }
 }

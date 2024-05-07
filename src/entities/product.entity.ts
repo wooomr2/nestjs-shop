@@ -24,6 +24,9 @@ export class ProductEntity extends BaseEntity {
   @Column('simple-array')
   images: string[]
 
+  @Column({ nullable: false })
+  categoryId: number
+
   // Associations
   @ManyToOne(() => CategoryEntity, cat => cat.products)
   category: CategoryEntity

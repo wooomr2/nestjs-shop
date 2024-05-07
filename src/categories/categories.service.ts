@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { ResponseDto } from 'src/common/dto/response.dto'
+import { ResponseEntity } from 'src/common/entities/response.entity'
 import { CategoryEntity } from 'src/entities/category.entity'
 import { Repository } from 'typeorm'
 import { CreateCategoryDto } from './dto/create-category.dto'
@@ -17,35 +17,34 @@ export class CategoriesService {
     const categoryEntity = this.categoryRepository.create(dto)
     const category = await this.categoryRepository.save(categoryEntity)
 
-    return ResponseDto.OKWith({ category })
+    return ResponseEntity.OK(category)
   }
 
   async update(id: number, dto: UpdateCategoryDto) {
     const category = await this.categoryRepository.findOneBy({ id })
-    if (!category) throw ResponseDto.categoryNotFound()
+    if (!category) throw ResponseEntity.notFound('category')
 
-    const categoryEntity = this.categoryRepository.create(Object.assign(category, dto))
-    const updatedCategory = await this.categoryRepository.save(categoryEntity)
+    await this.categoryRepository.update({ id }, dto)
 
-    return ResponseDto.OKWith({ category: updatedCategory })
+    return ResponseEntity.OK()
   }
 
   async delete(id: number) {
     await this.categoryRepository.softDelete(id)
 
-    return ResponseDto.OK()
+    return ResponseEntity.OK()
   }
 
   async findAll() {
     const categories = await this.categoryRepository.find()
 
-    return ResponseDto.OKWith({ categories })
+    return ResponseEntity.OK(categories)
   }
 
   async findOne(id: number) {
     const category = await this.categoryRepository.findOneBy({ id })
-    if (!category) throw ResponseDto.categoryNotFound()
+    if (!category) throw ResponseEntity.notFound('category')
 
-    return ResponseDto.OKWith({ category })
+    return ResponseEntity.OK(category)
   }
 }

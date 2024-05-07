@@ -1,7 +1,7 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm'
+import { BaseEntity } from './base.entity'
 import { ProductEntity } from './product.entity'
 import { UserEntity } from './user.entity'
-import { BaseEntity } from './base.entity'
 
 @Entity({ name: 'review' })
 export class ReviewEntity extends BaseEntity {
@@ -13,6 +13,13 @@ export class ReviewEntity extends BaseEntity {
 
   @Column()
   comment: string
+
+  // FK
+  @Column({ type: 'uuid', nullable: false })
+  userId: string
+
+  @Column({ nullable: false })
+  productId: number
 
   // Associations
   @ManyToOne(() => UserEntity, user => user.reviews)

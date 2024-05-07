@@ -9,10 +9,10 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm'
+import { BaseEntity } from './base.entity'
 import { OrderToProductEntity } from './order-to-product.entity'
 import { ShippingEntity } from './shipping.entity'
 import { UserEntity } from './user.entity'
-import { BaseEntity } from './base.entity'
 
 @Entity({ name: 'order' })
 export class OrderEntity extends BaseEntity {
@@ -30,6 +30,13 @@ export class OrderEntity extends BaseEntity {
 
   @Column({ nullable: true })
   deliveredAt: Date
+
+  // FK
+  @Column({ nullable: false })
+  shippingId: number
+
+  @Column({ type: 'uuid', nullable: false })
+  userId: string
 
   // Associations
   @OneToOne(() => ShippingEntity, shipping => shipping.order, { cascade: true })
