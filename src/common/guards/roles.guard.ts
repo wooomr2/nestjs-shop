@@ -19,7 +19,7 @@ import { ROLE } from '../enums/roles.enum'
 //   }
 // }
 
-export const RolesGuard = (...allowedRoles: ROLE[]) => {
+export const RolesGuard = (allowedRoles: ROLE[]) => {
   @Injectable()
   class RolesGuardMixin implements CanActivate {
     canActivate(context: ExecutionContext): boolean {

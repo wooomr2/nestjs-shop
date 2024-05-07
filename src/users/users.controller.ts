@@ -9,7 +9,7 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get()
-  @UseGuards(RolesGuard(ROLE.USER))
+  @UseGuards(RolesGuard([ROLE.USER]))
   findAll(): Promise<UserEntity[]> {
     return this.usersService.findAll()
   }
