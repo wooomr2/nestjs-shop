@@ -8,7 +8,7 @@ export class ResponseEntity {
 
   // Common
   static notFound(item: string) {
-    return new NotFoundException({ resCode: ResCode.NOT_FOUND, message: `${item} ${ResMessage.NOT_FOUND}` })
+    return new NotFoundException({ resCode: ResCode.NOT_FOUND_ITEM, message: `${item} ${ResMessage.NOT_FOUND_ITEM}` })
   }
 
   // Auth
@@ -30,5 +30,9 @@ export class ResponseEntity {
 
   static productInUse() {
     return new BadRequestException({ resCode: ResCode.PRODUCT_IN_USE, message: ResMessage.PRODUCT_IN_USE })
+  }
+
+  static reviewExists() {
+    return new BadRequestException({ resCode: ResCode.REVIEW_EXISTS, message: ResMessage.REVIEW_EXISTS })
   }
 }

@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common'
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Query } from '@nestjs/common'
 import { ICurrentUser } from 'src/auth/types'
 import { CurrentUser } from 'src/common/decorators/current-user.decorator'
 import { Public } from 'src/common/decorators/public.decorator'
@@ -17,22 +17,21 @@ export class ReviewsController {
 
   @Public()
   @Get()
-  async findAll() {
-    return await this.reviewsService.findAll()
+  async findByProductId(@Query('productId', ParseIntPipe) productId: number) {
+    return await this.reviewsService.findByProductId(productId)
   }
 
-  @Public()
-  @Get(':id')
-  async findOne(@Param('id') id: string) {
-    return await this.reviewsService.findOne(+id)
+  @Get('/:id')
+  async findOneById(@Param('id', ParseIntPipe) id: number) {
+    return await this.reviewsService.findOneById(id)
   }
 
-  @Patch(':id')
+  @Patch('/:id')
   async update(@Param('id') id: string, @Body() dto: UpdateReviewDto) {
     return await this.reviewsService.update(+id, dto)
   }
 
-  @Delete(':id')
+  @Delete('/:id')
   async remove(@Param('id') id: string) {
     return await this.reviewsService.remove(+id)
   }

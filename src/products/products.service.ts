@@ -35,12 +35,10 @@ export class ProductsService {
   }
 
   async delete(id: number) {
-    await this.dataSource.transaction(async manager => {
-      const order = await manager.findOneBy(OrderToProductEntity, { productId: id })
-      if (order) throw ResponseEntity.productInUse()
+    const order = await this.orderToProductRepository.findOneBy({ productId: id })
+    if (order) throw ResponseEntity.productInUse()
 
-      await manager.softDelete(ProductEntity, id)
-    })
+    await this.productRepository.softDelete(id)
 
     return ResponseEntity.OK()
   }
@@ -108,4 +106,6 @@ export class ProductsService {
 
     return ResponseEntity.OK(product)
   }
+
+  // TODO:: updateStock
 }

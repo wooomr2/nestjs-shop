@@ -2,7 +2,7 @@ export enum ResMessage {
   OK = 'OK',
 
   // Common
-  NOT_FOUND = 'not found',
+  NOT_FOUND_ITEM = 'not found',
 
   // Auth
   EMAIL_EXISTS = 'email exists',
@@ -12,20 +12,21 @@ export enum ResMessage {
 
   // Product
   PRODUCT_IN_USE = 'product is in use',
+
+  REVIEW_EXISTS = 'already reviewed this product',
 }
 
 export enum ResCode {
   OK = 0,
 
-  // Common
-  NOT_FOUND = 10000,
+  NOT_FOUND_ITEM = 10000,
 
-  // Auth
   EMAIL_EXISTS = 11000,
   INVALID_USER = 11001,
   INVALID_PASSWORD = 11002,
   ACCESS_DENIED = 11003,
 
-  // Product
   PRODUCT_IN_USE = 12000,
+
+  REVIEW_EXISTS = 13001,
 }

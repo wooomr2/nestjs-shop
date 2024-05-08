@@ -11,34 +11,65 @@ import { UpdateReviewDto } from './dto/update-review.dto'
 export class ReviewsService {
   constructor(
     @InjectRepository(ReviewEntity)
-    private readonly reviewRepositoy: Repository<ReviewEntity>,
-    @InjectRepository(ReviewEntity)
+    private readonly reviewRepository: Repository<ReviewEntity>,
+    @InjectRepository(ProductEntity)
     private readonly productRepository: Repository<ProductEntity>,
   ) {}
 
   async create(dto: CreateReviewDto, userId: string) {
-    const product = await this.productRepository.findOneBy({ id: dto.productId })
+    const product = await this.productRepository.countBy({ id: dto.productId })
     if (!product) throw ResponseEntity.notFound('product')
 
-    const reviewEntity = this.reviewRepositoy.create({ ...dto, userId })
-    const review = await this.reviewRepositoy.save(reviewEntity)
+    const reviewExists = await this.reviewRepository.countBy({ productId: dto.productId, userId })
+    if (reviewExists) throw ResponseEntity.reviewExists()
+
+    const reviewEntity = this.reviewRepository.create({ ...dto, userId })
+    const review = await this.reviewRepository.save(reviewEntity)
 
     return ResponseEntity.OK(review)
   }
 
-  async findAll() {
-    return `This action returns all reviews`
+  async findByProductId(productId: number) {
+    const reviews = await this.reviewRepository.find({
+      where: { productId },
+      select: {
+        user: { email: true, name: true },
+      },
+      relations: {
+        user: true,
+      },
+    })
+
+    return ResponseEntity.OK(reviews)
   }
 
-  async findOne(id: number) {
-    return `This action returns a #${id} review`
+  async findOneById(id: number) {
+    const review = await this.reviewRepository.findOne({
+      where: { id },
+      select: {
+        user: { email: true, name: true },
+      },
+      relations: {
+        user: true,
+      },
+    })
+    if (!review) throw ResponseEntity.notFound('review')
+
+    return ResponseEntity.OK(review)
   }
 
-  async update(id: number, updateReviewDto: UpdateReviewDto) {
-    return `This action updates a #${id} review`
+  async update(id: number, dto: UpdateReviewDto) {
+    const review = await this.reviewRepository.findOneBy({ id })
+    if (!review) throw ResponseEntity.notFound('review')
+
+    await this.reviewRepository.update({ id }, dto)
+
+    return ResponseEntity.OK()
   }
 
   async remove(id: number) {
-    return `This action removes a #${id} review`
+    await this.reviewRepository.softDelete(id)
+
+    return ResponseEntity.OK()
   }
 }
