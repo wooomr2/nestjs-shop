@@ -9,6 +9,9 @@ export enum ResMessage {
   INVALID_USER = 'invalid user',
   INVALID_PASSWORD = 'invalid password',
   ACCESS_DENIED = 'access denied',
+
+  // Product
+  PRODUCT_IN_USE = 'product is in use',
 }
 
 export enum ResCode {
@@ -22,4 +25,7 @@ export enum ResCode {
   INVALID_USER = 11001,
   INVALID_PASSWORD = 11002,
   ACCESS_DENIED = 11003,
+
+  // Product
+  PRODUCT_IN_USE = 12000,
 }

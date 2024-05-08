@@ -3,7 +3,7 @@ import { BaseEntity } from './base.entity'
 import { OrderEntity } from './order.entity'
 import { ProductEntity } from './product.entity'
 
-/** Mapping Table */
+/** Order Product Mapping Table */
 @Entity({ name: 'order_to_product' })
 export class OrderToProductEntity extends BaseEntity {
   @PrimaryGeneratedColumn()
