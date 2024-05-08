@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { ResponseEntity } from 'src/common/entities/response.entity'
+import { ResponseEntity } from 'src/common/classes/response.entity'
 import { CategoryEntity } from 'src/entities/category.entity'
 import { Repository } from 'typeorm'
 import { CreateCategoryDto } from './dto/create-category.dto'

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { ResponseEntity } from 'src/common/entities/response.entity'
+import { ResponseEntity } from 'src/common/classes/response.entity'
 import { ProductEntity } from 'src/entities/product.entity'
 import { ReviewEntity } from 'src/entities/review.entity'
 import { Repository } from 'typeorm'

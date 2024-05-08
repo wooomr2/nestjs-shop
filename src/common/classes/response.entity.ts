@@ -2,8 +2,8 @@ import { BadRequestException, ForbiddenException, NotFoundException } from '@nes
 import { ResCode, ResMessage } from '../enums/res-message.enum'
 
 export class ResponseEntity {
-  static OK<T>(data?: T, resCode = ResCode.OK, message = ResMessage.OK) {
-    return { resCode, message, data }
+  static OK<T>(result?: T, resCode = ResCode.OK, message = ResMessage.OK) {
+    return { resCode, message, result }
   }
 
   // Common
@@ -26,5 +26,9 @@ export class ResponseEntity {
 
   static invalidPassword() {
     return new ForbiddenException({ resCode: ResCode.INVALID_PASSWORD, message: ResMessage.INVALID_PASSWORD })
+  }
+
+  static productInUse() {
+    return new BadRequestException({ resCode: ResCode.PRODUCT_IN_USE, message: ResMessage.PRODUCT_IN_USE })
   }
 }

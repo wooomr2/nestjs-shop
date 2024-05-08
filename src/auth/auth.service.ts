@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config'
 import { JwtService } from '@nestjs/jwt'
 import { InjectRepository } from '@nestjs/typeorm'
 import { compare, genSalt, hash } from 'bcrypt'
-import { ResponseEntity } from 'src/common/entities/response.entity'
+import { ResponseEntity } from 'src/common/classes/response.entity'
 import { UserEntity } from 'src/entities/user.entity'
 import { DataSource, Repository } from 'typeorm'
 import { SigninDto } from './dto/signin.dto'
@@ -21,7 +21,7 @@ export class AuthService {
   ) {}
 
   async signup(dto: SignupDto) {
-    const emailExists = await this.userRepository.exists({ where: { email: dto.email }, withDeleted: true })
+    const emailExists = await this.userRepository.exists({ where: { email: dto.email } })
     if (emailExists) throw ResponseEntity.emailExists()
 
     dto.password = await hash(dto.password, await genSalt(10))
