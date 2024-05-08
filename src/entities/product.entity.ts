@@ -24,7 +24,8 @@ export class ProductEntity extends BaseEntity {
   @Column('simple-array')
   images: string[]
 
-  @Column({ nullable: false })
+  // FK
+  @Column({ nullable: false, select: false })
   categoryId: number
 
   // Associations

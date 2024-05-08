@@ -15,10 +15,10 @@ export class ReviewEntity extends BaseEntity {
   comment: string
 
   // FK
-  @Column({ type: 'uuid', nullable: false })
+  @Column({ type: 'uuid', nullable: false, select: false })
   userId: string
 
-  @Column({ nullable: false })
+  @Column({ nullable: false, select: false })
   productId: number
 
   // Associations

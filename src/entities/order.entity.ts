@@ -32,10 +32,10 @@ export class OrderEntity extends BaseEntity {
   deliveredAt: Date
 
   // FK
-  @Column({ nullable: false })
+  @Column({ nullable: false, select: false })
   shippingId: number
 
-  @Column({ type: 'uuid', nullable: false })
+  @Column({ type: 'uuid', nullable: false, select: false })
   userId: string
 
   // Associations

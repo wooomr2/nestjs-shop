@@ -16,10 +16,10 @@ export class OrderToProductEntity extends BaseEntity {
   productQuantity: number
 
   // FK
-  @Column({ type: 'uuid', nullable: false })
+  @Column({ type: 'uuid', nullable: false, select: false })
   orderId: string
 
-  @Column({ nullable: false })
+  @Column({ nullable: false, select: false })
   productId: number
 
   // Associations
