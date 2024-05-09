@@ -6,7 +6,7 @@ import { createDocument } from './swagger/create-document'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
-  app.setGlobalPrefix('api/v1')
+  app.setGlobalPrefix('api/v1', { exclude: ['/health-check'] })
   app.use(helmet())
 
   const configService = app.get(ConfigService)
