@@ -21,8 +21,10 @@ export class UserEntity extends BaseEntity {
   @Column({ type: 'enum', enum: ROLE, array: true, default: [ROLE.USER] })
   roles: ROLE[]
 
-  @Column({ nullable: true })
-  refreshToken?: string | null
+  // 참고:: Erorr:: DataTypeNotSupportedError: Data type "Object"
+  // nullable한경우 명시적으로 typeorm type선언 필요함.
+  @Column({ type: String, nullable: true })
+  refreshToken: string | null
 
   // Associtaions
   @OneToMany(() => OrderEntity, order => order.user)

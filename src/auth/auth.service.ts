@@ -42,8 +42,6 @@ export class AuthService {
     const matchPassword = await compare(dto.password, user.password)
     if (!matchPassword) throw ResponseEntity.invalidPassword()
 
-    delete user.password
-
     const tokens = this.#generateTokens(user)
     await this.userRepository.update({ id: user.id }, { refreshToken: tokens.refreshToken })
 

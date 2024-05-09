@@ -38,6 +38,7 @@ export class ReviewsService {
       relations: {
         user: true,
       },
+      order: { createdAt: 'DESC' },
     })
 
     return ResponseEntity.OK(reviews)

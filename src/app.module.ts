@@ -10,9 +10,10 @@ import { ConfigsModule } from './configs/configs.module'
 import { ProductsModule } from './products/products.module'
 import { ReviewsModule } from './reviews/reviews.module'
 import { UsersModule } from './users/users.module'
+import { OrdersModule } from './orders/orders.module'
 
 @Module({
-  imports: [ConfigsModule, AuthModule, UsersModule, CategoriesModule, ReviewsModule, ProductsModule],
+  imports: [ConfigsModule, AuthModule, UsersModule, CategoriesModule, ReviewsModule, ProductsModule, OrdersModule],
   controllers: [AppController],
   providers: [
     AppService,

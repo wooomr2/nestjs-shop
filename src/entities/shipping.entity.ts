@@ -13,9 +13,6 @@ export class ShippingEntity extends BaseEntity {
   @Column()
   name: string
 
-  @Column()
-  postCode: string
-
   @Column({ length: 3 })
   country: string
 
@@ -23,7 +20,10 @@ export class ShippingEntity extends BaseEntity {
   address: string
 
   @Column()
-  addressDtl: string
+  addressDetail: string
+
+  @Column()
+  postCode: string
 
   @OneToOne(() => OrderEntity, order => order.shipping)
   order: OrderEntity
