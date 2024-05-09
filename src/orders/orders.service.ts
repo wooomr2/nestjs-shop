@@ -62,8 +62,6 @@ export class OrdersService {
     return ResponseEntity.OK()
   }
 
-  // updateMethdd 따로 두고
-
   async updateStatus(id: string, dto: UpdateOrderStatusDto) {
     const { status } = dto
 
