@@ -3,7 +3,9 @@ import { ROLE } from 'src/common/enums/roles.enum'
 import { RolesGuard } from 'src/common/guards/roles.guard'
 import { UserEntity } from 'src/entities/user.entity'
 import { UsersService } from './users.service'
+import { ApiTags } from '@nestjs/swagger'
 
+@ApiTags('users')
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
