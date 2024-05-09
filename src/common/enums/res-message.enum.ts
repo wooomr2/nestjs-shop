@@ -12,8 +12,11 @@ export enum ResMessage {
 
   // Product
   PRODUCT_IN_USE = 'product is in use',
+  OUT_OF_STOCK = 'out of stock',
 
   REVIEW_EXISTS = 'already reviewed this product',
+
+  INVALID_ORDER_STATUS = 'invalid order. Order already status',
 }
 
 export enum ResCode {
@@ -27,6 +30,9 @@ export enum ResCode {
   ACCESS_DENIED = 11003,
 
   PRODUCT_IN_USE = 12000,
+  OUT_OF_STOCK = 12002,
 
   REVIEW_EXISTS = 13001,
+
+  INVALID_ORDER_STATUS = 14000,
 }

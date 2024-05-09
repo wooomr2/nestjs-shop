@@ -106,6 +106,4 @@ export class ProductsService {
 
     return ResponseEntity.OK(product)
   }
-
-  // TODO:: updateStock
 }

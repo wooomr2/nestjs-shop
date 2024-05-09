@@ -7,7 +7,7 @@ export class ResponseEntity {
   }
 
   // Common
-  static notFound(item: string) {
+  static notFound(item?: string) {
     return new NotFoundException({ resCode: ResCode.NOT_FOUND_ITEM, message: `${item} ${ResMessage.NOT_FOUND_ITEM}` })
   }
 
@@ -34,5 +34,13 @@ export class ResponseEntity {
 
   static reviewExists() {
     return new BadRequestException({ resCode: ResCode.REVIEW_EXISTS, message: ResMessage.REVIEW_EXISTS })
+  }
+
+  static outOfStock() {
+    return new BadRequestException({ resCode: ResCode.OUT_OF_STOCK, message: ResMessage.OUT_OF_STOCK })
+  }
+
+  static invalidOrderStatus() {
+    return new BadRequestException({ resCode: ResCode.INVALID_ORDER_STATUS, message: ResMessage.INVALID_ORDER_STATUS })
   }
 }
