@@ -1,10 +1,10 @@
 import { CustomException } from '@libs/common'
-import { UserEntity } from '@libs/entity'
 import { Injectable, InternalServerErrorException } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { JwtService } from '@nestjs/jwt'
 import { InjectRepository } from '@nestjs/typeorm'
 import { compare, genSalt, hash } from 'bcrypt'
+import { UserEntity } from '@libs/db/entities'
 import { DataSource, Repository } from 'typeorm'
 import { SigninDto } from './dto/signin.dto'
 import { SignupDto } from './dto/signup.dto'
@@ -17,7 +17,7 @@ export class AuthService {
     private readonly userRepository: Repository<UserEntity>,
     private readonly dataSource: DataSource,
     private readonly jwtService: JwtService,
-    private readonly configService: ConfigService,
+    private readonly config: ConfigService,
   ) {}
 
   async signup(dto: SignupDto): Promise<void> {
@@ -71,13 +71,13 @@ export class AuthService {
     const jwtPayload: JwtPayload = { sub: id, email: email, roles: roles }
 
     const accessToken = this.jwtService.sign(jwtPayload, {
-      secret: this.configService.getOrThrow('ACCESS_TOKEN_SECRET'),
-      expiresIn: this.configService.getOrThrow('ACCESS_TOKEN_EXPIRE'),
+      secret: this.config.getOrThrow('ACCESS_TOKEN_SECRET'),
+      expiresIn: this.config.getOrThrow('ACCESS_TOKEN_EXPIRE'),
     })
 
     const refreshToken = this.jwtService.sign(jwtPayload, {
-      secret: this.configService.getOrThrow('REFRESH_TOKEN_SECRET'),
-      expiresIn: this.configService.getOrThrow('REFRESH_TOKEN_EXPIRE'),
+      secret: this.config.getOrThrow('REFRESH_TOKEN_SECRET'),
+      expiresIn: this.config.getOrThrow('REFRESH_TOKEN_EXPIRE'),
     })
 
     return { accessToken, refreshToken }

@@ -1,5 +1,5 @@
 import { CustomException, ORDER_STATUS } from '@libs/common'
-import { OrderEntity, OrderToProductEntity, ProductEntity, ShippingEntity } from '@libs/entity'
+import { OrderEntity, OrderToProductEntity, ProductEntity, ShippingEntity } from '@libs/db/entities'
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { DataSource, In, Repository } from 'typeorm'

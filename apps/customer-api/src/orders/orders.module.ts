@@ -1,4 +1,4 @@
-import { OrderEntity, OrderToProductEntity, ProductEntity, ShippingEntity } from '@libs/entity'
+import { OrderEntity, OrderToProductEntity, ProductEntity, ShippingEntity } from '@libs/db/entities'
 import { Module } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { OrdersController } from './orders.controller'

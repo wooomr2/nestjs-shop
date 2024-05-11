@@ -1,4 +1,4 @@
-import { ProductEntity, ReviewEntity } from '@libs/entity'
+import { ProductEntity, ReviewEntity } from '@libs/db/entities'
 import { Module } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { ReviewsController } from './reviews.controller'

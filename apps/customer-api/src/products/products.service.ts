@@ -1,6 +1,6 @@
 import { CustomException } from '@libs/common'
 import { PageDto } from '@libs/common/dtos/page'
-import { OrderToProductEntity, ProductEntity } from '@libs/entity'
+import { OrderToProductEntity, ProductEntity } from '@libs/db/entities'
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { plainToInstance } from 'class-transformer'

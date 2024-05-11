@@ -48,7 +48,7 @@ export class EnvVariables {
   REFRESH_TOKEN_EXPIRE: string
 }
 
-export function validate(config: Record<string, unknown>) {
+export function envValidation(config: Record<string, unknown>) {
   const validatedConfig = plainToInstance(EnvVariables, config, { enableImplicitConversion: true })
   const errors = validateSync(validatedConfig, { skipMissingProperties: false })
 

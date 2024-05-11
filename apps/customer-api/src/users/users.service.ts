@@ -1,5 +1,5 @@
 import { CustomException } from '@libs/common'
-import { UserEntity } from '@libs/entity'
+import { UserEntity } from '@libs/db/entities'
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'

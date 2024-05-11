@@ -1,5 +1,5 @@
 import { CustomException } from '@libs/common'
-import { ProductEntity, ReviewEntity } from '@libs/entity'
+import { ProductEntity, ReviewEntity } from '@libs/db/entities'
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'

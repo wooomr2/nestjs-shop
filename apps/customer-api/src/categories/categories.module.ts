@@ -1,4 +1,4 @@
-import { CategoryEntity } from '@libs/entity/category.entity'
+import { CategoryEntity } from '@libs/db/entities/category.entity'
 import { Module } from '@nestjs/common'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { CategoriesController } from './categories.controller'

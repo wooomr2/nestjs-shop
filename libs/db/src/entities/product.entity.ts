@@ -1,7 +1,8 @@
-import { BaseEntity, Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
+import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
 import { CategoryEntity } from './category.entity'
 import { OrderToProductEntity } from './order-to-product.entity'
 import { ReviewEntity } from './review.entity'
+import { BaseEntity } from './base.entity'
 
 @Entity({ name: 'product' })
 export class ProductEntity extends BaseEntity {

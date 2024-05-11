@@ -18,8 +18,6 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@libs/entity": ["libs/entity/src"],
-      "@libs/entity/*": ["libs/entity/src/*"],
       "@libs/db": ["libs/db/src"],
       "@libs/db/*": ["libs/db/src/*"],
       "@libs/common": ["libs/common/src"],

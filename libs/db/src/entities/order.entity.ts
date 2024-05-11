@@ -1,6 +1,5 @@
 import { ORDER_STATUS } from '@libs/common'
 import {
-  BaseEntity,
   Column,
   CreateDateColumn,
   Entity,
@@ -10,6 +9,7 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm'
+import { BaseEntity } from './base.entity'
 import { OrderToProductEntity } from './order-to-product.entity'
 import { ShippingEntity } from './shipping.entity'
 import { UserEntity } from './user.entity'
