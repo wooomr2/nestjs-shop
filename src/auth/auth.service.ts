@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config'
 import { JwtService } from '@nestjs/jwt'
 import { InjectRepository } from '@nestjs/typeorm'
 import { compare, genSalt, hash } from 'bcrypt'
-import { ResponseEntity } from 'src/common/classes/response.entity'
+import { CustomException } from 'src/common/exceptions/custom-exception'
 import { UserEntity } from 'src/entities/user.entity'
 import { DataSource, Repository } from 'typeorm'
 import { SigninDto } from './dto/signin.dto'
@@ -22,7 +22,7 @@ export class AuthService {
 
   async signup(dto: SignupDto): Promise<void> {
     const emailExists = await this.userRepository.exists({ where: { email: dto.email } })
-    if (emailExists) throw ResponseEntity.emailExists()
+    if (emailExists) throw CustomException.emailExists()
 
     dto.password = await hash(dto.password, await genSalt(10))
     const userEntity = this.userRepository.create(dto)
@@ -35,10 +35,10 @@ export class AuthService {
       select: { id: true, email: true, password: true, roles: true },
       where: { email: dto.email },
     })
-    if (!user) throw ResponseEntity.invalidUser()
+    if (!user) throw CustomException.invalidUser()
 
     const matchPassword = await compare(dto.password, user.password)
-    if (!matchPassword) throw ResponseEntity.invalidPassword()
+    if (!matchPassword) throw CustomException.invalidPassword()
 
     const tokens = this.#generateTokens(user)
     await this.userRepository.update({ id: user.id }, { refreshToken: tokens.refreshToken })
@@ -54,7 +54,7 @@ export class AuthService {
     const user = await this.userRepository.findOneBy({ id: currentUser.id })
 
     if (!user || !user.refreshToken || user.refreshToken !== refreshToken) {
-      throw ResponseEntity.accessDenied()
+      throw CustomException.accessDenied()
     }
 
     const tokens = this.#generateTokens(user)

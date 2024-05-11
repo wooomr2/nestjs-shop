@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { ResponseEntity } from 'src/common/classes/response.entity'
+import { CustomException } from 'src/common/exceptions/custom-exception'
 import { ProductEntity } from 'src/entities/product.entity'
 import { ReviewEntity } from 'src/entities/review.entity'
 import { Repository } from 'typeorm'
@@ -18,10 +18,10 @@ export class ReviewsService {
 
   async create(dto: CreateReviewDto, userId: string): Promise<ReviewEntity> {
     const product = await this.productRepository.countBy({ id: dto.productId })
-    if (!product) throw ResponseEntity.notFound('product')
+    if (!product) throw CustomException.notFound('product')
 
     const reviewExists = await this.reviewRepository.countBy({ productId: dto.productId, userId })
-    if (reviewExists) throw ResponseEntity.reviewExists()
+    if (reviewExists) throw CustomException.reviewExists()
 
     const reviewEntity = this.reviewRepository.create({ ...dto, userId })
     const review = await this.reviewRepository.save(reviewEntity)
@@ -54,14 +54,14 @@ export class ReviewsService {
         user: true,
       },
     })
-    if (!review) throw ResponseEntity.notFound('review')
+    if (!review) throw CustomException.notFound('review')
 
     return review
   }
 
   async update(id: number, dto: UpdateReviewDto): Promise<void> {
     const review = await this.reviewRepository.findOneBy({ id })
-    if (!review) throw ResponseEntity.notFound('review')
+    if (!review) throw CustomException.notFound('review')
 
     await this.reviewRepository.update({ id }, dto)
   }

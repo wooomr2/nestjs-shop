@@ -1,5 +1,6 @@
-import { Injectable, NotFoundException } from '@nestjs/common'
+import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
+import { CustomException } from 'src/common/exceptions/custom-exception'
 import { UserEntity } from 'src/entities/user.entity'
 import { Repository } from 'typeorm'
 
@@ -17,7 +18,7 @@ export class UsersService {
 
   async findOne(id: string): Promise<UserEntity> {
     const user = await this.userRepository.findOneBy({ id })
-    if (!user) throw new NotFoundException(`User with id ${id} not found`)
+    if (!user) throw CustomException.notFound(`user`)
 
     return user
   }

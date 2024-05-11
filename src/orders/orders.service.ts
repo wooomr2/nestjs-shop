@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { ICurrentUser } from 'src/auth/types'
-import { ResponseEntity } from 'src/common/classes/response.entity'
 import { ORDER_STATUS } from 'src/common/enums/order-status.enum'
+import { CustomException } from 'src/common/exceptions/custom-exception'
 import { OrderToProductEntity } from 'src/entities/order-to-product.entity'
 import { OrderEntity } from 'src/entities/order.entity'
 import { ProductEntity } from 'src/entities/product.entity'
@@ -42,8 +42,8 @@ export class OrdersService {
       const opEntities: OrderToProductEntity[] = []
       for (const orderedProduct of orderedProducts) {
         const product = products.find(p => p.id === orderedProduct.id)
-        if (!product) throw ResponseEntity.notFound(`product with id: ${orderedProduct.id}`)
-        if (product.stock < orderedProduct.quantity) throw ResponseEntity.outOfStock()
+        if (!product) throw CustomException.notFound(`product`)
+        if (product.stock < orderedProduct.quantity) throw CustomException.outOfStock()
 
         opEntities.push(
           this.opRepository.create({
@@ -64,7 +64,7 @@ export class OrdersService {
     const { status } = dto
 
     const order = await this.orderRepository.findOneBy({ id })
-    if (!order) throw ResponseEntity.notFound('order')
+    if (!order) throw CustomException.notFound('order')
 
     if (status === ORDER_STATUS.SHIPPED) {
       order.shippedAt = new Date()
@@ -93,7 +93,7 @@ export class OrdersService {
       where: { id: id },
       relations: { shipping: true, orderToProduct: true },
     })
-    if (!order) throw ResponseEntity.notFound('order')
+    if (!order) throw CustomException.notFound('order')
 
     return order
   }

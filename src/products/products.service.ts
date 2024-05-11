@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { plainToInstance } from 'class-transformer'
-import { ResponseEntity } from 'src/common/classes/response.entity'
 import { PageDto } from 'src/common/dtos/page/page.dto'
+import { CustomException } from 'src/common/exceptions/custom-exception'
 import { OrderToProductEntity } from 'src/entities/order-to-product.entity'
 import { ProductEntity } from 'src/entities/product.entity'
 import { DataSource, Repository } from 'typeorm'
@@ -29,14 +29,14 @@ export class ProductsService {
 
   async update(id: number, dto: UpdateProductDto): Promise<void> {
     const product = await this.productRepository.findOneBy({ id })
-    if (!product) throw ResponseEntity.notFound('product')
+    if (!product) throw CustomException.notFound('product')
 
     await this.productRepository.update({ id }, dto)
   }
 
   async delete(id: number): Promise<void> {
     const order = await this.orderToproductRepository.findOneBy({ productId: id })
-    if (order) throw ResponseEntity.productInUse()
+    if (order) throw CustomException.productInUse()
 
     await this.productRepository.softDelete(id)
   }
@@ -100,7 +100,7 @@ export class ProductsService {
         },
       },
     })
-    if (!product) throw ResponseEntity.notFound('product')
+    if (!product) throw CustomException.notFound('product')
 
     return product
   }

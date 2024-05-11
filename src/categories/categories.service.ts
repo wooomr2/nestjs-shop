@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { ResponseEntity } from 'src/common/classes/response.entity'
+import { CustomException } from 'src/common/exceptions/custom-exception'
 import { CategoryEntity } from 'src/entities/category.entity'
 import { Repository } from 'typeorm'
 import { CreateCategoryDto } from './dto/create-category.dto'
@@ -19,7 +19,7 @@ export class CategoriesService {
 
   async update(id: number, dto: UpdateCategoryDto) {
     const category = await this.categoryRepository.findOneBy({ id })
-    if (!category) throw ResponseEntity.notFound('category')
+    if (!category) throw CustomException.notFound('category')
 
     await this.categoryRepository.update({ id }, dto)
   }
@@ -34,7 +34,7 @@ export class CategoriesService {
 
   async findOne(id: number): Promise<CategoryEntity> {
     const category = await this.categoryRepository.findOneBy({ id })
-    if (!category) throw ResponseEntity.notFound('category')
+    if (!category) throw CustomException.notFound('category')
 
     return category
   }
