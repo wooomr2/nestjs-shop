@@ -27,7 +27,7 @@ export class OrdersService {
     private readonly dataSource: DataSource,
   ) {}
 
-  async create(createOrderDto: CreateOrderDto, user: ICurrentUser) {
+  async create(createOrderDto: CreateOrderDto, user: ICurrentUser): Promise<void> {
     const { shipppingAddress, orderedProducts } = createOrderDto
 
     const productIds = orderedProducts.map(product => product.id)
@@ -58,11 +58,9 @@ export class OrdersService {
       // to bulk-insert
       await manager.insert(OrderToProductEntity, opEntities)
     })
-
-    return ResponseEntity.OK()
   }
 
-  async updateStatus(id: string, dto: UpdateOrderStatusDto) {
+  async updateStatus(id: string, dto: UpdateOrderStatusDto): Promise<void> {
     const { status } = dto
 
     const order = await this.orderRepository.findOneBy({ id })
@@ -79,7 +77,7 @@ export class OrdersService {
     await this.orderRepository.save(order)
   }
 
-  async findAll() {
+  async findAll(): Promise<OrderEntity[]> {
     const orders = await this.orderRepository.find({
       relations: {
         shipping: true,
@@ -87,16 +85,16 @@ export class OrdersService {
       },
     })
 
-    return ResponseEntity.OK(orders)
+    return orders
   }
 
-  async findOne(id: string) {
+  async findOne(id: string): Promise<OrderEntity> {
     const order = await this.orderRepository.findOne({
       where: { id: id },
       relations: { shipping: true, orderToProduct: true },
     })
     if (!order) throw ResponseEntity.notFound('order')
 
-    return ResponseEntity.OK(order)
+    return order
   }
 }

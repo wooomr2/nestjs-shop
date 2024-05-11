@@ -1,4 +1,6 @@
 import { Body, Controller, HttpCode, HttpStatus, Post, UseGuards } from '@nestjs/common'
+import { ApiTags } from '@nestjs/swagger'
+import { ResponseEntity } from 'src/common/classes/response.entity'
 import { CurrentPaylaod } from 'src/common/decorators/current-payload.decorator'
 import { CurrentUser } from 'src/common/decorators/current-user.decorator'
 import { Public } from 'src/common/decorators/public.decorator'
@@ -7,7 +9,6 @@ import { AuthService } from './auth.service'
 import { SigninDto } from './dto/signin.dto'
 import { SignupDto } from './dto/signup.dto'
 import { ICurrentUser } from './types'
-import { ApiTags } from '@nestjs/swagger'
 
 @ApiTags('auth')
 @Controller('auth')
@@ -20,20 +21,23 @@ export class AuthController {
   @Post('/sign-up')
   @HttpCode(HttpStatus.CREATED)
   async signup(@Body() dto: SignupDto) {
-    return await this.authService.signup(dto)
+    await this.authService.signup(dto)
+    return ResponseEntity.OK()
   }
 
   @Public()
   @Post('/sign-in')
   @HttpCode(HttpStatus.OK)
   async signin(@Body() dto: SigninDto) {
-    return await this.authService.signin(dto)
+    const tokens = await this.authService.signin(dto)
+    return ResponseEntity.OK_WITH(tokens)
   }
 
   @Post('/logout')
   @HttpCode(HttpStatus.OK)
   async logout(@CurrentUser() user: ICurrentUser) {
-    return await this.authService.logout(user)
+    await this.authService.logout(user)
+    return ResponseEntity.OK()
   }
 
   @Public()
@@ -41,6 +45,7 @@ export class AuthController {
   @Post('/refresh')
   @HttpCode(HttpStatus.OK)
   async tokenRefresh(@CurrentUser() user: ICurrentUser, @CurrentPaylaod('refreshToken') refreshToken: string) {
-    return await this.authService.tokenRefresh(user, refreshToken)
+    const tokens = await this.authService.tokenRefresh(user, refreshToken)
+    return ResponseEntity.OK_WITH(tokens)
   }
 }

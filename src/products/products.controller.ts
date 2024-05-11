@@ -20,7 +20,7 @@ export class ProductsController {
   async create(@Body() dto: CreateProductDto) {
     const product = await this.productsService.create(dto)
 
-    return ResponseEntity.OK(product)
+    return ResponseEntity.OK_WITH(product)
   }
 
   @UseGuards(RolesGuard([ROLE.ADMIN]))
@@ -45,13 +45,13 @@ export class ProductsController {
   async findAll(@Query() query: FindAllProductDto) {
     const productPageDto = await this.productsService.findAll(query)
 
-    return ResponseEntity.OK(productPageDto)
+    return ResponseEntity.OK_WITH(productPageDto)
   }
 
   @Get('/:id')
   async findOne(@Param('id', ParseIntPipe) id: number) {
     const product = await this.productsService.findOne(id)
 
-    return ResponseEntity.OK(product)
+    return ResponseEntity.OK_WITH(product)
   }
 }

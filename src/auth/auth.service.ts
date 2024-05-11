@@ -20,7 +20,7 @@ export class AuthService {
     private readonly configService: ConfigService,
   ) {}
 
-  async signup(dto: SignupDto) {
+  async signup(dto: SignupDto): Promise<void> {
     const emailExists = await this.userRepository.exists({ where: { email: dto.email } })
     if (emailExists) throw ResponseEntity.emailExists()
 
@@ -28,11 +28,9 @@ export class AuthService {
     const userEntity = this.userRepository.create(dto)
 
     await this.userRepository.save(userEntity)
-
-    return ResponseEntity.OK()
   }
 
-  async signin(dto: SigninDto) {
+  async signin(dto: SigninDto): Promise<ITokens> {
     const user = await this.userRepository.findOne({
       select: { id: true, email: true, password: true, roles: true },
       where: { email: dto.email },
@@ -45,15 +43,14 @@ export class AuthService {
     const tokens = this.#generateTokens(user)
     await this.userRepository.update({ id: user.id }, { refreshToken: tokens.refreshToken })
 
-    return ResponseEntity.OK(tokens)
+    return tokens
   }
 
-  async logout(currentUser: ICurrentUser) {
+  async logout(currentUser: ICurrentUser): Promise<void> {
     await this.userRepository.update({ id: currentUser.id }, { refreshToken: null })
-    return ResponseEntity.OK()
   }
 
-  async tokenRefresh(currentUser: ICurrentUser, refreshToken: string) {
+  async tokenRefresh(currentUser: ICurrentUser, refreshToken: string): Promise<ITokens> {
     const user = await this.userRepository.findOneBy({ id: currentUser.id })
 
     if (!user || !user.refreshToken || user.refreshToken !== refreshToken) {
@@ -63,7 +60,7 @@ export class AuthService {
     const tokens = this.#generateTokens(user)
     await this.userRepository.update({ id: user.id }, { refreshToken: tokens.refreshToken })
 
-    return ResponseEntity.OK(tokens)
+    return tokens
   }
 
   #generateTokens({ id, email, roles }: UserEntity): ITokens {

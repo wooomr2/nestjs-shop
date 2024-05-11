@@ -1,9 +1,9 @@
 import { Controller, Get, Param, UseGuards } from '@nestjs/common'
+import { ApiTags } from '@nestjs/swagger'
+import { ResponseEntity } from 'src/common/classes/response.entity'
 import { ROLE } from 'src/common/enums/roles.enum'
 import { RolesGuard } from 'src/common/guards/roles.guard'
-import { UserEntity } from 'src/entities/user.entity'
 import { UsersService } from './users.service'
-import { ApiTags } from '@nestjs/swagger'
 
 @ApiTags('users')
 @Controller('users')
@@ -12,12 +12,14 @@ export class UsersController {
 
   @Get()
   @UseGuards(RolesGuard([ROLE.USER]))
-  async findAll(): Promise<UserEntity[]> {
-    return await this.usersService.findAll()
+  async findAll() {
+    const users = await this.usersService.findAll()
+    return ResponseEntity.OK_WITH(users)
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string): Promise<UserEntity> {
-    return await this.usersService.findOne(id)
+  async findOne(@Param('id') id: string) {
+    const user = await this.usersService.findOne(id)
+    return ResponseEntity.OK_WITH(user)
   }
 }

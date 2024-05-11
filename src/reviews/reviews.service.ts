@@ -16,7 +16,7 @@ export class ReviewsService {
     private readonly productRepository: Repository<ProductEntity>,
   ) {}
 
-  async create(dto: CreateReviewDto, userId: string) {
+  async create(dto: CreateReviewDto, userId: string): Promise<ReviewEntity> {
     const product = await this.productRepository.countBy({ id: dto.productId })
     if (!product) throw ResponseEntity.notFound('product')
 
@@ -26,10 +26,10 @@ export class ReviewsService {
     const reviewEntity = this.reviewRepository.create({ ...dto, userId })
     const review = await this.reviewRepository.save(reviewEntity)
 
-    return ResponseEntity.OK(review)
+    return review
   }
 
-  async findByProductId(productId: number) {
+  async findByProductId(productId: number): Promise<ReviewEntity[]> {
     const reviews = await this.reviewRepository.find({
       where: { productId },
       select: {
@@ -41,10 +41,10 @@ export class ReviewsService {
       order: { createdAt: 'DESC' },
     })
 
-    return ResponseEntity.OK(reviews)
+    return reviews
   }
 
-  async findOneById(id: number) {
+  async findOneById(id: number): Promise<ReviewEntity> {
     const review = await this.reviewRepository.findOne({
       where: { id },
       select: {
@@ -56,21 +56,17 @@ export class ReviewsService {
     })
     if (!review) throw ResponseEntity.notFound('review')
 
-    return ResponseEntity.OK(review)
+    return review
   }
 
-  async update(id: number, dto: UpdateReviewDto) {
+  async update(id: number, dto: UpdateReviewDto): Promise<void> {
     const review = await this.reviewRepository.findOneBy({ id })
     if (!review) throw ResponseEntity.notFound('review')
 
     await this.reviewRepository.update({ id }, dto)
-
-    return ResponseEntity.OK()
   }
 
-  async remove(id: number) {
+  async remove(id: number): Promise<void> {
     await this.reviewRepository.softDelete(id)
-
-    return ResponseEntity.OK()
   }
 }

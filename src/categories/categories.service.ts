@@ -13,11 +13,8 @@ export class CategoriesService {
     private readonly categoryRepository: Repository<CategoryEntity>,
   ) {}
 
-  async create(dto: CreateCategoryDto) {
-    const categoryEntity = this.categoryRepository.create(dto)
-    const category = await this.categoryRepository.save(categoryEntity)
-
-    return ResponseEntity.OK(category)
+  async create(dto: CreateCategoryDto): Promise<CategoryEntity> {
+    return await this.categoryRepository.save(this.categoryRepository.create(dto))
   }
 
   async update(id: number, dto: UpdateCategoryDto) {
@@ -25,26 +22,20 @@ export class CategoriesService {
     if (!category) throw ResponseEntity.notFound('category')
 
     await this.categoryRepository.update({ id }, dto)
-
-    return ResponseEntity.OK()
   }
 
-  async delete(id: number) {
+  async delete(id: number): Promise<void> {
     await this.categoryRepository.softDelete(id)
-
-    return ResponseEntity.OK()
   }
 
-  async findAll() {
-    const categories = await this.categoryRepository.find()
-
-    return ResponseEntity.OK(categories)
+  async findAll(): Promise<CategoryEntity[]> {
+    return await this.categoryRepository.find()
   }
 
-  async findOne(id: number) {
+  async findOne(id: number): Promise<CategoryEntity> {
     const category = await this.categoryRepository.findOneBy({ id })
     if (!category) throw ResponseEntity.notFound('category')
 
-    return ResponseEntity.OK(category)
+    return category
   }
 }

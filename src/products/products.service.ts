@@ -15,30 +15,30 @@ import { UpdateProductDto } from './dto/update-product.dto'
 export class ProductsService {
   constructor(
     @InjectRepository(ProductEntity)
-    private readonly productRepo: Repository<ProductEntity>,
+    private readonly productRepository: Repository<ProductEntity>,
     @InjectRepository(OrderToProductEntity)
-    private readonly orderToproductRepo: Repository<OrderToProductEntity>,
+    private readonly orderToproductRepository: Repository<OrderToProductEntity>,
     private readonly dataSource: DataSource,
   ) {}
 
   async create(dto: CreateProductDto): Promise<ProductEntity> {
-    const product = await this.productRepo.save(this.productRepo.create(dto))
+    const product = await this.productRepository.save(this.productRepository.create(dto))
 
     return product
   }
 
   async update(id: number, dto: UpdateProductDto): Promise<void> {
-    const product = await this.productRepo.findOneBy({ id })
+    const product = await this.productRepository.findOneBy({ id })
     if (!product) throw ResponseEntity.notFound('product')
 
-    await this.productRepo.update({ id }, dto)
+    await this.productRepository.update({ id }, dto)
   }
 
   async delete(id: number): Promise<void> {
-    const order = await this.orderToproductRepo.findOneBy({ productId: id })
+    const order = await this.orderToproductRepository.findOneBy({ productId: id })
     if (order) throw ResponseEntity.productInUse()
 
-    await this.productRepo.softDelete(id)
+    await this.productRepository.softDelete(id)
   }
 
   async findAll(query: FindAllProductDto): Promise<PageDto<ProductDto>> {
@@ -88,7 +88,7 @@ export class ProductsService {
   }
 
   async findOne(id: number): Promise<ProductEntity> {
-    const product = await this.productRepo.findOne({
+    const product = await this.productRepository.findOne({
       where: { id: id },
       relations: {
         category: true,
