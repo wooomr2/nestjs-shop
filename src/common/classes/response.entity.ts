@@ -1,5 +1,5 @@
-import { BadRequestException, ForbiddenException, NotFoundException } from '@nestjs/common'
-import { ResCode, ResMessage } from '../enums/res-message.enum'
+import { BadRequestException, ForbiddenException, HttpException, NotFoundException } from '@nestjs/common'
+import { ResCode, ResMessage } from '../enums/response.enum'
 
 export class ResponseEntity {
   static OK(resCode = ResCode.OK, message = ResMessage.OK) {
@@ -10,12 +10,10 @@ export class ResponseEntity {
     return { resCode, message, data }
   }
 
-  // Common
   static notFound(item?: string) {
     return new NotFoundException({ resCode: ResCode.NOT_FOUND_ITEM, message: `${item} ${ResMessage.NOT_FOUND_ITEM}` })
   }
 
-  // Auth
   static accessDenied() {
     return new ForbiddenException({ resCode: ResCode.ACCESS_DENIED, message: ResMessage.ACCESS_DENIED })
   }

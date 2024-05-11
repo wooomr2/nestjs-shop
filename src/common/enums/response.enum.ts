@@ -1,3 +1,21 @@
+export enum ResCode {
+  OK = 'OK',
+
+  NOT_FOUND_ITEM = 'NOT_FOUND_ITEM',
+
+  EMAIL_EXISTS = 'EMAIL_EXISTS',
+  INVALID_USER = 'INVALID_USER',
+  INVALID_PASSWORD = 'INVALID_PASSWORD',
+  ACCESS_DENIED = 'ACCESS_DENIED',
+
+  PRODUCT_IN_USE = 'PRODUCT_IN_USE',
+  OUT_OF_STOCK = 'OUT_OF_STOCK',
+
+  REVIEW_EXISTS = 'REVIEW_EXISTS',
+
+  INVALID_ORDER_STATUS = 'INVALID_ORDER_STATUS',
+}
+
 export enum ResMessage {
   OK = 'OK',
 
@@ -17,22 +35,4 @@ export enum ResMessage {
   REVIEW_EXISTS = 'already reviewed this product',
 
   INVALID_ORDER_STATUS = 'invalid order. Order already status',
-}
-
-export enum ResCode {
-  OK = 0,
-
-  NOT_FOUND_ITEM = 10000,
-
-  EMAIL_EXISTS = 11000,
-  INVALID_USER = 11001,
-  INVALID_PASSWORD = 11002,
-  ACCESS_DENIED = 11003,
-
-  PRODUCT_IN_USE = 12000,
-  OUT_OF_STOCK = 12002,
-
-  REVIEW_EXISTS = 13001,
-
-  INVALID_ORDER_STATUS = 14000,
 }
