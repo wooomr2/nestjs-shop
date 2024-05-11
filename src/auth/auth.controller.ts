@@ -9,7 +9,6 @@ import { SignupDto } from './dto/signup.dto'
 import { ICurrentUser } from './types'
 import { ApiTags } from '@nestjs/swagger'
 
-
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {

@@ -8,10 +8,13 @@ export class ProductDto {
 
   @Expose({ name: 'product_description' })
   description: string
+
   @Expose({ name: 'product_price' })
   price: number
+
   @Expose({ name: 'product_stock' })
   stock: number
+
   @Expose({ name: 'product_images' })
   @Transform(({ value }) => value.toString().split(','))
   images: string[]
