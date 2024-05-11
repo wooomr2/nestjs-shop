@@ -20,7 +20,7 @@ export class PageMetaDto {
   @ApiProperty()
   readonly hasNextPage: boolean
 
-  constructor(pageOption: PageOptionDto, itemCount: number) {
+  constructor(itemCount: number, pageOption: PageOptionDto) {
     this.page = pageOption.page
     this.take = pageOption.take
     this.itemCount = itemCount

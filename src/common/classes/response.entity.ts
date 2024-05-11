@@ -2,8 +2,8 @@ import { BadRequestException, ForbiddenException, NotFoundException } from '@nes
 import { ResCode, ResMessage } from '../enums/res-message.enum'
 
 export class ResponseEntity {
-  static OK<T>(result?: T, resCode = ResCode.OK, message = ResMessage.OK) {
-    return { resCode, message, result }
+  static OK<T>(data?: T, resCode = ResCode.OK, message = ResMessage.OK) {
+    return { resCode, message, data }
   }
 
   // Common

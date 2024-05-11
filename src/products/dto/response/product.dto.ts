@@ -1,16 +1,6 @@
-import { Expose, Transform, Type } from 'class-transformer'
+import { Expose, Transform } from 'class-transformer'
 
-export class ProductsDto {
-  @Expose()
-  totalProducts: number
-  @Expose()
-  limit: number
-  @Expose()
-  @Type(() => ProductList)
-  products: ProductList[]
-}
-
-export class ProductList {
+export class ProductDto {
   @Expose({ name: 'product_id' })
   id: number
   @Expose({ name: 'product_title' })
@@ -35,8 +25,8 @@ export class ProductList {
   @Expose()
   category: any
 
-  @Expose({ name: 'reviewcount' })
+  @Expose({ name: 'review_cnt' })
   review: number
-  @Expose({ name: 'avgrating' })
+  @Expose({ name: 'avg_rating' })
   rating: number
 }

@@ -3,7 +3,7 @@ import { Type } from 'class-transformer'
 import { IsOptional, Max, Min } from 'class-validator'
 import { PageOptionDto } from 'src/common/dtos/page/page-option.dto'
 
-export class PageProductDto extends PageOptionDto {
+export class FindAllProductDto extends PageOptionDto {
   @ApiProperty({ required: false, type: String })
   @IsOptional()
   search?: string

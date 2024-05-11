@@ -6,13 +6,13 @@ import { PageOptionDto } from './page-option.dto'
 export class PageDto<T> {
   @ApiProperty({ isArray: true })
   @IsArray()
-  readonly data: T[]
+  readonly items: T[]
 
   @ApiProperty({ type: () => PageMetaDto })
   readonly meta: PageMetaDto
 
-  constructor(data: T[], pageOption: PageOptionDto, itemCount: number) {
-    this.data = data
-    this.meta = new PageMetaDto(pageOption, itemCount)
+  constructor(items: T[], itemCount: number, pageOption: PageOptionDto) {
+    this.items = items
+    this.meta = new PageMetaDto(itemCount, pageOption)
   }
 }
